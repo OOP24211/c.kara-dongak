@@ -5,7 +5,6 @@
 #include "AssetManager.h"
 #include "GameLogic.h"
 
-// Переименован из game.h
 class Game {
 public:
     Game();
@@ -31,8 +30,8 @@ private:
 
 private:
     sf::RenderWindow window;
-    AssetManager assets; // Объект для управления ресурсами
-    GameLogic logic;     // Объект для управления логикой
+    AssetManager assets; 
+    GameLogic logic;
 
     std::vector<Button> buttons;
 
