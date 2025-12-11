@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-// Класс для загрузки и хранения всех игровых ресурсов (SRP)
+
 class AssetManager {
 public:
     AssetManager() {
