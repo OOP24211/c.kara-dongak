@@ -21,7 +21,6 @@ public:
     void handleCardClick(int clickedIndex);
     void setAllUnmatchedCardsOpen(bool open);
 
-    // Геттеры для "Инкапсуляции"
     int getMoves() const { return moves; }
     int getMatchedPairs() const { return matchedPairs; }
     GameState getState() const { return state; }
