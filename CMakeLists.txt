@@ -12,11 +12,11 @@ add_executable(MemoryGame
     main.cpp
     Card.h
     constants.h
-    Game.cpp          # Изменено имя
-    Game.h            # Изменено имя
-    AssetManager.h    # Новый файл
-    GameLogic.h       # Новый файл
-    GameLogic.cpp     # Новый файл
+    Game.cpp          
+    Game.h            
+    AssetManager.h   
+    GameLogic.h       
+    GameLogic.cpp     
 )
 
 target_link_libraries(MemoryGame
