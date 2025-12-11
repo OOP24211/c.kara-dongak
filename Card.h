@@ -1,14 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-// Базовый класс для всех сущностей в игре, для "полиморфизма"
 struct GameObject {
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual bool contains(float x, float y) = 0;
     virtual ~GameObject() = default;
 };
 
-// Базовый класс для карточки
 struct BaseCard : public GameObject {
     int pairId = 0;
     bool isOpen = false;
@@ -21,11 +19,9 @@ struct BaseCard : public GameObject {
     }
 
     void draw(sf::RenderWindow& window) override {
-        // Базовый Draw ничего не делает
     }
 };
 
-// Конкретная реализация карточки (для "OCP" и "LSP")
 struct GameCard : public BaseCard {
     sf::Sprite faceSprite;
     sf::Sprite backSprite;
