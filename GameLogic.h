@@ -9,7 +9,6 @@ enum class GameState {
     Running, Paused,
 };
 
-// Класс для хранения и управления логикой игры (SRP)
 class GameLogic {
 public:
     GameLogic(int rows, int cols) : rows(rows), cols(cols), firstOpenIndex(FIRST_OPEN_INDEX), secondOpenIndex(SECOND_OPEN_INDEX), moves(MOVES), matchedPairs(MATCHED_PAIRS), waitingForPairCheck(WAITING_FOR_PAIR_CHECK) {
@@ -22,7 +21,6 @@ public:
     void handleCardClick(int clickedIndex);
     void setAllUnmatchedCardsOpen(bool open);
 
-    // Геттеры для "Инкапсуляции"
     int getMoves() const { return moves; }
     int getMatchedPairs() const { return matchedPairs; }
     GameState getState() const { return state; }
