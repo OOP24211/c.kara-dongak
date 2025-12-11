@@ -1,43 +1,26 @@
 cmake_minimum_required(VERSION 3.16)
-project(oop_lab1)
+project(MemoryGame)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(oop_lab1
-        main.cpp
-        lru_cache.cpp
-        lfu_cache.cpp
-        fib_runner.cpp
-        fib.cpp
+set(SFML_DIR "/Users/coksumkara-dongak/SFML-2.6.2/lib/cmake/SFML")
+
+find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
+
+add_executable(MemoryGame
+    main.cpp
+    Card.h
+    constants.h
+    Game.cpp          # Изменено имя
+    Game.h            # Изменено имя
+    AssetManager.h    # Новый файл
+    GameLogic.h       # Новый файл
+    GameLogic.cpp     # Новый файл
 )
 
-target_include_directories(oop_lab1 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-include(FetchContent)
-
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/refs/heads/main.zip
+target_link_libraries(MemoryGame
+    sfml-graphics
+    sfml-window
+    sfml-system
 )
-
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
-enable_testing()
-
-add_executable(tests
-        tests.cpp
-        lru_cache.cpp
-        lfu_cache.cpp
-        fib_runner.cpp
-        fib.cpp
-)
-
-target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-target_link_libraries(tests
-        GTest::gtest
-        GTest::gtest_main
-)
-
-add_test(NAME CacheTests COMMAND tests)
