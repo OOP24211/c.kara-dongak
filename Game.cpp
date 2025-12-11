@@ -2,17 +2,14 @@
 #include "constants.h"
 #include <iostream>
 
-// Конструктор
 Game::Game() : window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT), "Memory Game"), logic(ROWS, COLUMNS) {
 
     setupUI();
     setupCardVisuals();
 
-    // Настройка спрайтов карточек после загрузки текстур в AssetManager
     const auto& cardTextures = assets.getCardTextures();
     const sf::Texture& backTexture = assets.getBackTexture();
 
-    // Инициализация текстур для всех карточек
     auto& cards = logic.getCards();
     for (size_t i = 0; i < cards.size(); ++i) {
         int pairId = cards[i].pairId;
@@ -21,7 +18,7 @@ Game::Game() : window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT), "Memory Game"),
 }
 
 void Game::run() {
-    gameClock.restart(); // Перезапуск таймера для точности
+    gameClock.restart(); 
     while (window.isOpen()) {
         processEvents();
         update();
@@ -29,9 +26,7 @@ void Game::run() {
     }
 }
 
-// Перенесена часть из Game::Game()
 void Game::setupUI() {
-    // Настройка текста
     const sf::Font& font = assets.getFont();
 
     movesText.setFont(font);
@@ -49,7 +44,6 @@ void Game::setupUI() {
     timeText.setFillColor(sf::Color::White);
     timeText.setPosition(200.f, 10.f);
 
-    // Настройка кнопок
     auto makeButton = [&](const std::string& name, float x, float y) {
         Button b;
         b.shape.setSize({140.f, 40.f});
@@ -72,7 +66,6 @@ void Game::setupUI() {
     float xRight = WINDOW_WIDTH - btnWidth - 20.f;
     float yStart = 120.f;
 
-    // В коде не было кнопок Hint, но они есть в game.cpp. Добавлю их.
     makeButton("Stop",   xRight, yStart + 0 * (btnHeight + btnMargin));
     makeButton("Resume", xRight, yStart + 1 * (btnHeight + btnMargin));
     makeButton("New",    xRight, yStart + 2 * (btnHeight + btnMargin));
@@ -83,15 +76,12 @@ void Game::setupCardVisuals() {
     const auto& cardTextures = assets.getCardTextures();
     const sf::Texture& backTexture = assets.getBackTexture();
 
-    // Инициализация текстур для всех карточек
     auto& cards = logic.getCards();
     for (size_t i = 0; i < cards.size(); ++i) {
         int pairId = cards[i].pairId;
-        // Проверка на всякий случай, чтобы не выйти за границы вектора текстур
         if (pairId >= 0 && static_cast<size_t>(pairId) < cardTextures.size()) {
             cards[i].setTexture(cardTextures[pairId], backTexture);
         } else {
-            // Студенческий вывод об ошибке
             std::cerr << "Error: Invalid pairId " << pairId << " during texture setup." << std::endl;
         }
     }
@@ -114,7 +104,6 @@ void Game::processEvents() {
 }
 
 void Game::update() {
-    // Обновление логики игры (анимации, проверки пар)
     logic.updateAnimation();
 
     if (logic.isWaitingForPairCheck()) {
@@ -127,12 +116,10 @@ void Game::update() {
     if (hintMode) {
         if (hintClock.getElapsedTime().asSeconds() > HintDuration) {
             hintMode = false;
-            // Закрываем карты, которые не были сопоставлены
             logic.setAllUnmatchedCardsOpen(false);
         }
     }
 
-    // Обновление времени, только если игра запущена
     if (logic.getState() == GameState::Running) {
         elapsedSeconds += gameClock.restart().asSeconds();
     }
@@ -140,7 +127,6 @@ void Game::update() {
         gameClock.restart();
     }
 
-    // Обновление текста
     movesText.setString("Moves: " + std::to_string(logic.getMoves()));
     pairsText.setString("Pairs: " + std::to_string(logic.getMatchedPairs()));
     int total = static_cast<int>(elapsedSeconds);
@@ -154,19 +140,17 @@ void Game::update() {
     timeText.setString(timeStr);
 
     if (logic.getMatchedPairs() == 8 && logic.getState() == GameState::Running) {
-        logic.setState(GameState::Paused); // Останавливаем игру и таймер
+        logic.setState(GameState::Paused);
     }
 }
 
 void Game::render() {
     window.clear(sf::Color(150, 100, 220));
 
-    // Отрисовка карточек
     for (auto& card : logic.getCards()) {
-        card.draw(window); // Используем полиморфизм! (уровня 1-го курса)
+        card.draw(window);
     }
 
-    // Отрисовка UI
     window.draw(movesText);
     window.draw(pairsText);
     window.draw(timeText);
@@ -201,7 +185,6 @@ void Game::handleButtonClick(const std::string& name) {
 }
 
 void Game::handleClick(float x, float y) {
-    // Проверка кнопок
     for (auto& b : buttons) {
         if (b.contains(x, y)) {
             handleButtonClick(b.label.getString());
@@ -221,7 +204,6 @@ void Game::handleClick(float x, float y) {
         return;
     }
 
-    // Проверка карточек
     int clickedIndex = -1;
     auto& cards = logic.getCards();
     for (int i = 0; i < static_cast<int>(cards.size()); ++i) {
