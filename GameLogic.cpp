@@ -1,6 +1,5 @@
 #include "GameLogic.h"
 
-// Перенес часть логики из Game::init
 void GameLogic::init() {
     cards.clear();
 
@@ -45,7 +44,6 @@ void GameLogic::init() {
     initialReveal = true;
     initialClock.restart();
 
-    // Студенческий костыль: для начального показа
     for (auto &card : cards) {
         card.isOpen = true;
         card.anim = 1.f;
@@ -135,8 +133,6 @@ void GameLogic::checkPairIfNeeded() {
 }
 
 void GameLogic::setAllUnmatchedCardsOpen(bool open) {
-    // Используем `anim` для плавного эффекта, или `isOpen` для мгновенного.
-    // Если хотите мгновенно:
     for (auto& card : cards) {
         if (!card.isMatched) {
             card.isOpen = open;
